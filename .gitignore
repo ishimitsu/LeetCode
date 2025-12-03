@@ -39,3 +39,28 @@
 
 # debug information files
 *.dwo
+
+# CMake build artifacts
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+*.cmake
+
+# Test executables
+test_*
+**/test_*
+
+# Build directories
+build/
+**/build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
