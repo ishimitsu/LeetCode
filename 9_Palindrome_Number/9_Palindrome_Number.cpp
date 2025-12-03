@@ -3,37 +3,20 @@
 
 class Solution {
 public:
-    int getDigitNum(int x) {
-        int digitNum = 0;
+    bool isPalindrome(int x) {
+        if ((x < 0) || ((x != 0) && (x % 10 == 0))) return false;
+
+        int reserved = 0;
         int temp = x;
-        while(temp / 10 > 0) {
-            digitNum++;
+
+        // cut half-x and reserve, like 1221 => 122/1, 12/21 (stop reserving)
+        while (reserved < temp) {
+            reserved = reserved * 10 + temp % 10;
             temp /= 10;
         }
-        return digitNum;
-    }
 
-    bool isPalindrome(int x) {
-        if (x < 0) return false;
-        if ((x >= 0) && (x <= 9)) return true;
-
-        int digitNum = getDigitNum(x);
-        int left = 1;
-        int right = std::pow(10, digitNum);
-
-        while (left < right) {
-            int leftDigit = (x / left) % 10 ;
-            int rightDigit = (x / right) % 10 ;
-            printf("leftDigit: %d, rightDigit: %d\n", leftDigit, rightDigit);
-            if (leftDigit != rightDigit) {
-                return false;
-            }
-
-            left = left * 10;
-            right = right / 10;
-        }
-
-        return true;
+        // 12/21 => true, or 12321 => 12/321 (reserved is 123, so remove 3 and compare 12/12)
+        return reserved == temp || reserved / 10  == temp;
     }
 };
 
@@ -46,6 +29,7 @@ protected:
 
 TEST_F(PalindromeTest, PositivePalindrome) {
     EXPECT_TRUE(solution.isPalindrome(121));
+    EXPECT_TRUE(solution.isPalindrome(12321));
 }
 
 TEST_F(PalindromeTest, NegativeNumbers) {
