@@ -1,10 +1,9 @@
-#include <stdio.h>
-#include <cmath>
-
 class Solution {
 public:
     bool isPalindrome(int x) {
-        if ((x < 0) || ((x != 0) && (x % 10 == 0))) return false;
+        if (x < 0) return false;
+        if (x < 10) return true;
+        if (x % 10 == 0) return false; // XX..0 should always false (but 0 is true)
 
         int reserved = 0;
         int temp = x;
