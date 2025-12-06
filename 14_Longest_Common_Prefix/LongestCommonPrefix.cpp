@@ -16,6 +16,9 @@ public:
             char searchChar = strs[0][i];
             // Vertical Search
             for (int j = 1; j < strs.size(); j++) {
+                if (i >= strs[j].length()) {
+                    return result;
+                }
                 if (searchChar != strs[j][i]) {
                     return result;
                 }
