@@ -7,49 +7,28 @@ class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
         vector<vector<int>> result = {};
+        std::sort(nums.begin(), nums.end());
 
         for(int fst = 0; fst < nums.size(); fst++)  {
-            for(int sec = fst + 1; sec < nums.size(); sec++)  {
-                for(int thd = sec + 1; thd < nums.size(); thd++)  {
+            if(fst > 0 && nums[fst] == nums[fst - 1]) continue; // fst is duplicated, skip
 
-                    if (nums[fst] + nums[sec] + nums[thd] == 0) {
-                        bool duplicated = false;
-                        for (vector<int> vec : result) {
-                            vector<bool> duplicated_three = {false, false, false};
-                            int duplicated_cnt = 0;
+            int left = fst + 1;
+            int right = nums.size() - 1;
+            while (left < right) {
+                int threeSum = nums[fst] + nums[left] + nums[right];
 
-                            for (int i = 0; i < vec.size(); i++) {
-                                if (!duplicated_three[0] && nums[fst] == vec[i]) {
-                                    duplicated_three[0] = true;
-                                    duplicated_cnt++;
-                                } else if (!duplicated_three[1] && nums[sec] == vec[i]) {
-                                    duplicated_three[1] = true;
-                                    duplicated_cnt++;
-                                } else if (!duplicated_three[2] && nums[thd] == vec[i]) {
-                                    duplicated_three[2] = true;
-                                    duplicated_cnt++;
-                                }
+                if (threeSum > 0) { right--; }
+                else if (threeSum < 0) { left++; }
+                else { // threeSum == 0
+                    result.push_back({nums[fst], nums[left], nums[right]});
 
-                                if (duplicated_cnt >= 3) {
-                                    duplicated = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (!duplicated) {
-                            vector<int> three_sum = {-1, -1, -1};
-                            three_sum[0] = nums[fst];
-                            three_sum[1] = nums[sec];
-                            three_sum[2] = nums[thd];
-
-                            result.push_back(three_sum);
-                        }
-                    }
+                    // skip duplicated left/right
+                    while(left < right && nums[left] == nums[left + 1]) left++;
+                    while(left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
                 }
-
             }
-
         }
 
         return result;
@@ -78,6 +57,12 @@ TEST_F(ThreeSumTest, Example2) {
 TEST_F(ThreeSumTest, Example3) {
     vector<int> nums = {0, 0, 0};
     vector<vector<int>> expected = {{0, 0, 0}};
+    EXPECT_EQ(solution.threeSum(nums), expected);
+}
+
+TEST_F(ThreeSumTest, Example4) {
+    vector<int> nums = {2,-3,0,-2,-5,-5,-4,1,2,-2,2,0,2,-4,5,5,-10};
+    vector<vector<int>> expected = {{-10,5,5},{-5,0,5},{-4,2,2},{-3,-2,5},{-3,1,2},{-2,0,2}};
     EXPECT_EQ(solution.threeSum(nums), expected);
 }
 
