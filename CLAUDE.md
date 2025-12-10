@@ -42,7 +42,9 @@
 
 ### 1. ブランチ作成
 ```bash
-git checkout -b feature/{問題番号}-{問題名(小文字、ハイフン区切り)} main
+git checkout main
+git pull origin main
+git checkout -b feature/{問題番号}-{問題名(小文字、ハイフン区切り)}
 git push -u origin feature/{問題番号}-{問題名}
 ```
 例: `feature/15-3sum`, `feature/14-longest-common-prefix`
