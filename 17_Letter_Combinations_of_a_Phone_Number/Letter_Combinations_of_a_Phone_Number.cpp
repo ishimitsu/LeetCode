@@ -6,6 +6,18 @@ using std::vector;
 using std::string;
 
 class Solution {
+      const std::string digitToLetters[10] = {
+      "",     // 0
+      "",     // 1
+      "abc",  // 2
+      "def",  // 3
+      "ghi",  // 4
+      "jkl",  // 5
+      "mno",  // 6
+      "pqrs", // 7
+      "tuv",  // 8
+      "wxyz"  // 9
+  };
 public:
     // Given a string containing digits from 2-9 inclusive,
     // return all possible letter combinations that the number could represent.
@@ -14,8 +26,18 @@ public:
     // 2 -> abc, 3 -> def, 4 -> ghi, 5 -> jkl,
     // 6 -> mno, 7 -> pqrs, 8 -> tuv, 9 -> wxyz
     vector<string> letterCombinations(string digits) {
-        // TODO: implement
-        return {};
+        vector<string> result = {};
+        vector<string> letters = {};
+        for (char cdigit : digits) {
+            int digit = cdigit - '0'; // This code needs char_digit is "0" - "9"
+            if (digit > 9) return {}; // invalid digit!
+            letters.push_back(digitToLetters[digit]);
+        }
+
+        std::cout << "letters" << std::endl;
+        for(string s : letters) { std::cout << s << std::endl; }
+
+        return result;
     }
 };
 
