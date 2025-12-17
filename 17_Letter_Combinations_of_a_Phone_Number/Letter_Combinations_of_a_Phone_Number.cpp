@@ -19,7 +19,7 @@ class Solution {
       "wxyz"  // 9
   };
 public:
-    void getLettersFromDigits(vector<string> *letters, string digits, string answer, int idx) {
+    void getLettersFromDigits(vector<string> *letters, const string digits, string answer, size_t idx) {
         int digit = digits[idx] - '0'; // digits[] should be "0" - "9"
         string letter = digitToLetters[digit];
 
@@ -41,6 +41,8 @@ public:
     // 2 -> abc, 3 -> def, 4 -> ghi, 5 -> jkl,
     // 6 -> mno, 7 -> pqrs, 8 -> tuv, 9 -> wxyz
     vector<string> letterCombinations(string digits) {
+        if (digits.empty()) return {}; // invalid digits!
+
         vector<string> result = {};
         getLettersFromDigits(&result, digits, "", 0);
         return result;
