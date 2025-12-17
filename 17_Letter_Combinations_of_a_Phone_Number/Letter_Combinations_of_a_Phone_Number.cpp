@@ -19,7 +19,7 @@ class Solution {
       "wxyz"  // 9
   };
 public:
-    void getLettersFromDigits(vector<string> *letters, const string digits, string answer, size_t idx) {
+    void getLettersFromDigits(vector<string> *letters, const string& digits, string answer, size_t idx) {
         int digit = digits[idx] - '0'; // digits[] should be "0" - "9"
         string letter = digitToLetters[digit];
 
