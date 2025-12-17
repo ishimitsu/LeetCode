@@ -19,6 +19,21 @@ class Solution {
       "wxyz"  // 9
   };
 public:
+    void getLettersFromDigits(vector<string> *letters, string digits, string answer, int idx) {
+        int digit = digits[idx] - '0'; // digits[] should be "0" - "9"
+        string letter = digitToLetters[digit];
+
+        for (char l : letter) {
+            string newAnswer = answer + l;
+            if ((idx + 1) < digits.length()) {
+                getLettersFromDigits(letters, digits, newAnswer, idx + 1);
+            }
+            else {
+                letters->push_back(newAnswer);
+            }
+        }
+    }
+
     // Given a string containing digits from 2-9 inclusive,
     // return all possible letter combinations that the number could represent.
     //
@@ -27,16 +42,7 @@ public:
     // 6 -> mno, 7 -> pqrs, 8 -> tuv, 9 -> wxyz
     vector<string> letterCombinations(string digits) {
         vector<string> result = {};
-        vector<string> letters = {};
-        for (char cdigit : digits) {
-            int digit = cdigit - '0'; // This code needs char_digit is "0" - "9"
-            if (digit > 9) return {}; // invalid digit!
-            letters.push_back(digitToLetters[digit]);
-        }
-
-        std::cout << "letters" << std::endl;
-        for(string s : letters) { std::cout << s << std::endl; }
-
+        getLettersFromDigits(&result, digits, "", 0);
         return result;
     }
 };
