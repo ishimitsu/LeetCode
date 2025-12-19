@@ -7,9 +7,37 @@ using std::vector;
 class Solution {
 public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        // TODO: implement
-        return {};
+        vector<vector<int>> result = {};
+        std::sort(nums.begin(), nums.end());
+
+        for(int fst = 0; fst < nums.size(); fst++)  {
+            if(fst > 0 && nums[fst] == nums[fst - 1]) continue; // fst is duplicated, skip
+
+            for(int sec = fst + 1; sec < nums.size(); sec++)  {
+                if(sec > (fst + 1) && nums[sec] == nums[sec - 1]) continue; // sec is duplicated, skip
+
+                int left = sec + 1;
+                int right = nums.size() - 1;
+                while (left < right) {
+                    int fourSum = nums[fst] + nums[sec] + nums[left] + nums[right];
+
+                    if (fourSum > target) { right--; }
+                    else if (fourSum < target) { left++; }
+                    else { // fourSum == target
+                        result.push_back({nums[fst], nums[sec], nums[left], nums[right]});
+
+                        // skip duplicated left/right
+                        while(left < right && nums[left] == nums[left + 1]) left++;
+                        while(left < right && nums[right] == nums[right - 1]) right--;
+                        left++;
+                        right--;
+                    }
+                }
+            }
+        }
+        return result;
     }
+
 };
 
 #include <gtest/gtest.h>
