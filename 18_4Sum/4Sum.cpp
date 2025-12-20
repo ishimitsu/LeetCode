@@ -15,11 +15,12 @@ public:
 
             for(int sec = fst + 1; sec < nums.size(); sec++)  {
                 if(sec > (fst + 1) && nums[sec] == nums[sec - 1]) continue; // sec is duplicated, skip
+                long long fstSecSum = (long long)nums[fst] + nums[sec];
 
                 int left = sec + 1;
                 int right = nums.size() - 1;
                 while (left < right) {
-                    int fourSum = nums[fst] + nums[sec] + nums[left] + nums[right];
+                    long long fourSum = fstSecSum + nums[left] + nums[right];
 
                     if (fourSum > target) { right--; }
                     else if (fourSum < target) { left++; }
