@@ -7,15 +7,15 @@ using std::vector;
 class Solution {
 public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        vector<vector<int>> result = {};
+        vector<vector<int>> result;
         std::sort(nums.begin(), nums.end());
 
-        for(int fst = 0; fst < nums.size(); fst++)  {
+        for(size_t fst = 0; fst < nums.size(); fst++)  {
             if(fst > 0 && nums[fst] == nums[fst - 1]) continue; // fst is duplicated, skip
 
-            for(int sec = fst + 1; sec < nums.size(); sec++)  {
+            for(size_t sec = fst + 1; sec < nums.size(); sec++)  {
                 if(sec > (fst + 1) && nums[sec] == nums[sec - 1]) continue; // sec is duplicated, skip
-                long long fstSecSum = (long long)nums[fst] + nums[sec];
+                long long fstSecSum = static_cast<long long>(nums[fst]) + nums[sec];
 
                 int left = sec + 1;
                 int right = nums.size() - 1;
