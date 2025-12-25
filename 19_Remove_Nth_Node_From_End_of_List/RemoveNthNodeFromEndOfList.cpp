@@ -15,29 +15,28 @@ struct ListNode {
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode *fstPtr = head;
-        ListNode *secPtr = head;
-        int cnt = 0;
-        while (fstPtr->next != nullptr) {
-            fstPtr = fstPtr->next;
-            cnt++;
-            if (cnt > n) {
-                secPtr = secPtr->next;
+        ListNode *nodePtr = head;
+        ListNode *removeTarget = head;
+        ListNode *prevRemove = head;
+        int nodeIdx = 0;
+
+        while (nodePtr != nullptr) {
+            nodePtr = nodePtr->next;
+            nodeIdx++;
+            if (nodeIdx > n && removeTarget->next != nullptr) {
+                prevRemove = removeTarget;
+                removeTarget = removeTarget->next;
             }
         }
 
-        //if (cnt <= n) return nullptr; // n is larger than List-size
-
-        std::cout << "second " << secPtr->val << std::endl;
-        if (secPtr->next != nullptr) {
-            ListNode *removeTarget = secPtr->next;
-            ListNode *nextRemoveTarget = removeTarget->next;
-            secPtr->next = nextRemoveTarget;
-
-            return head;
+        if (removeTarget == head) {
+            // removeTarget doesn't move, and n request removing head
+            return head = head->next;
+        } else {
+            prevRemove->next = removeTarget->next;
         }
 
-         return nullptr;
+        return head;
     }
 };
 
@@ -103,6 +102,13 @@ TEST_F(RemoveNthNodeFromEndOfListTest, Example3) {
     deleteList(result);
 }
 
+// Example 4: head = [1,2], n = 2 -> [2]
+TEST_F(RemoveNthNodeFromEndOfListTest, Example4) {
+    ListNode* head = createList({1, 2});
+    ListNode* result = solution.removeNthFromEnd(head, 2);
+    EXPECT_EQ(listToVector(result), vector<int>({2}));
+    deleteList(result);
+}
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
