@@ -15,8 +15,29 @@ struct ListNode {
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        // TODO: implement
-        return nullptr;
+        ListNode *fstPtr = head;
+        ListNode *secPtr = head;
+        int cnt = 0;
+        while (fstPtr->next != nullptr) {
+            fstPtr = fstPtr->next;
+            cnt++;
+            if (cnt > n) {
+                secPtr = secPtr->next;
+            }
+        }
+
+        //if (cnt <= n) return nullptr; // n is larger than List-size
+
+        std::cout << "second " << secPtr->val << std::endl;
+        if (secPtr->next != nullptr) {
+            ListNode *removeTarget = secPtr->next;
+            ListNode *nextRemoveTarget = removeTarget->next;
+            secPtr->next = nextRemoveTarget;
+
+            return head;
+        }
+
+         return nullptr;
     }
 };
 
