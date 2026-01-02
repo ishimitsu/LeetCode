@@ -2,8 +2,18 @@ pub struct Solution;
 
 impl Solution {
     pub fn is_valid(s: String) -> bool {
-        // TODO: implement
-        false
+        let mut v: Vec<char> = Vec::new();
+        for c in s.chars() {
+            match c {
+                '(' | '[' |'{' => v.push(c),
+                ')' => if v.pop() != Some('(') { return false }
+                ']' => if v.pop() != Some('[') { return false }
+                '}' => if v.pop() != Some('{') { return false }
+                _ => return false
+            }
+        }
+
+        true
     }
 }
 
