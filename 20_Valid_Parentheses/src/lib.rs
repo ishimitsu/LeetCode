@@ -13,7 +13,9 @@ impl Solution {
             }
         }
 
-        true
+        if v.is_empty() { return true ; } // if v isn't empty, close brackets aren't enough
+
+        false
     }
 }
 
