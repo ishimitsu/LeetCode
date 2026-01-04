@@ -64,3 +64,9 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Rust build artifacts
+target/
+**/target/
+Cargo.lock
+**/*.rs.bk
