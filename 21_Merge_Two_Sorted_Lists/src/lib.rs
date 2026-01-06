@@ -1,3 +1,5 @@
+use std::ptr::null;
+
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
@@ -16,11 +18,37 @@ pub struct Solution;
 
 impl Solution {
     pub fn merge_two_lists(
-        list1: Option<Box<ListNode>>,
-        list2: Option<Box<ListNode>>,
+        mut list1: Option<Box<ListNode>>,
+        mut list2: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
-        // TODO: implement
-        None
+        let mut head = ListNode::new(0); // initialize with dummy val
+        let mut tail = &mut head;
+
+        while list1.is_some() || list2.is_some() {
+            match (list1.as_ref(), list2.as_ref()) {
+                (Some(_), None) => { /* list2 is empty */
+                    tail.next = list1;
+                    return head.next
+                }
+                (None, Some(_)) => { /* list1 is empty */
+                    tail.next = list2;
+                    return head.next
+                }
+                (None, None) => { return head.next /* both empty */ }
+                (Some(n1), Some(n2)) => {
+                    if n1.val <= n2.val {
+                        tail.next = Some(Box::new(ListNode::new(n1.val)));
+                        list1 = list1.unwrap().next;
+                    } else {
+                        tail.next = Some(Box::new(ListNode::new(n2.val)));
+                        list2 = list2.unwrap().next;
+                    }
+                }
+            }
+            tail = tail.next.as_mut().unwrap();
+        }
+
+        head.next
     }
 }
 
