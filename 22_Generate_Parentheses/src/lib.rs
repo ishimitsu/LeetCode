@@ -1,9 +1,27 @@
 pub struct Solution;
 
 impl Solution {
+    pub fn get_all_parenthesis (parenthesis: String, n: i32, left: i32, right: i32, result: &mut Vec<String>) {
+
+        if left < n {
+            Self::get_all_parenthesis (parenthesis.clone() + "(", n, left + 1, right, result);
+        }
+
+        if right < left && right < n {
+            Self::get_all_parenthesis (parenthesis.clone() + ")", n, left, right + 1, result);
+        }
+
+        if right == n {
+            result.push (parenthesis);
+        }
+    }
+
     pub fn generate_parenthesis(n: i32) -> Vec<String> {
         // TODO: implement
-        vec![]
+        let mut parenthesis: Vec<String> = Vec::new();
+        Self::get_all_parenthesis("".to_string(), n, 0, 0, &mut parenthesis);
+        //println!("{:?}", parenthesis);
+        parenthesis
     }
 }
 
