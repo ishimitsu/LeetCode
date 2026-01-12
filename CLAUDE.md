@@ -43,6 +43,8 @@ git push
 
 ### 4. PR作成
 ```bash
-gh pr create --title "Feature/{問題番号} {問題名(小文字)}" --body ""
+gh pr create --title "Feature/{問題番号} {問題名(小文字)}" --body "https://leetcode.com/problems/{問題名(小文字、ハイフン区切り)}"
 ```
-例: `Feature/15 3sum`, `Feature/14 longest common prefix`
+例:
+- タイトル: `Feature/15 3sum`, `Feature/14 longest common prefix`
+- URL: `https://leetcode.com/problems/3sum`, `https://leetcode.com/problems/longest-common-prefix`
