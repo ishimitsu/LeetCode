@@ -12,12 +12,63 @@ impl ListNode {
     }
 }
 
+impl PartialOrd for ListNode {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for ListNode {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.val.cmp(&other.val)  // val で比較
+    }
+}
+
 pub struct Solution;
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
 
 impl Solution {
     pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
-        // TODO: implement
-        None
+        let mut dummy = ListNode::new(0); // put dummy node before head of lists
+        let mut tail = &mut dummy;
+        let mut heap = BinaryHeap::new();
+
+        // Create first heap
+        for list in lists {
+            match list {
+                None => { /* list is empty */ }
+                Some(list) => {
+                    heap.push(Reverse(list)); // push first-val of each list
+                }
+            }
+        }
+
+        while !heap.is_empty() {
+            let min = heap.pop().unwrap().0;
+            tail.next = Some(Box::new(ListNode::new(min.val)));
+            tail = tail.next.as_mut().unwrap();
+            println!("{}", min.val);
+        }
+
+/*
+        while lists.len() > 0 {
+            // get minimum val, and push minimum-val node into heap
+            let mut minimum = Some(heap.pop());
+            if minimum.is_some() {
+                match (minimum.as_ref()) {
+                None => { /* empty */ }
+                Some(minimum) => {
+                    tail.next = Some(Box::new(ListNode::new(minimum.val)));
+
+                    if minimum.next.is_some() {
+                        heap.push(Reverse(minimum.next));
+                    }
+                }
+            }
+        }
+ */
+        dummy.next
     }
 }
 
