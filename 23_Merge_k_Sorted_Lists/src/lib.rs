@@ -44,30 +44,18 @@ impl Solution {
             }
         }
 
-        while !heap.is_empty() {
-            let min = heap.pop().unwrap().0;
-            tail.next = Some(Box::new(ListNode::new(min.val)));
-            tail = tail.next.as_mut().unwrap();
-            println!("{}", min.val);
-        }
-
-/*
-        while lists.len() > 0 {
-            // get minimum val, and push minimum-val node into heap
-            let mut minimum = Some(heap.pop());
-            if minimum.is_some() {
-                match (minimum.as_ref()) {
-                None => { /* empty */ }
-                Some(minimum) => {
-                    tail.next = Some(Box::new(ListNode::new(minimum.val)));
-
-                    if minimum.next.is_some() {
-                        heap.push(Reverse(minimum.next));
-                    }
-                }
+        while let Some(Reverse(mut min)) = heap.pop() {
+            // get min-val node from heap, and push min-val node.next into heap
+            if let Some(next) = min.next.take() {
+                heap.push(Reverse(next));
             }
+            println!("hogehoge {}", min.as_ref().val);
+
+            // push min-val node into result
+            tail.next = Some(min);
+            tail = tail.next.as_mut().unwrap();
         }
- */
+
         dummy.next
     }
 }
