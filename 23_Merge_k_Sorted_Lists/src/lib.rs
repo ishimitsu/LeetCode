@@ -49,7 +49,6 @@ impl Solution {
             if let Some(next) = min.next.take() {
                 heap.push(Reverse(next));
             }
-            println!("hogehoge {}", min.as_ref().val);
 
             // push min-val node into result
             tail.next = Some(min);
