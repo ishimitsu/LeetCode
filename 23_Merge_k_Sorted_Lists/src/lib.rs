@@ -47,6 +47,7 @@ impl Solution {
         while let Some(Reverse(mut min)) = heap.pop() {
             // get min-val node from heap, and push min-val node.next into heap
             if let Some(next) = min.next.take() {
+                // take node from lists, and push into heap
                 heap.push(Reverse(next));
             }
 
