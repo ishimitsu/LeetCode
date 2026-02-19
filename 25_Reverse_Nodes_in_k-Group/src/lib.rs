@@ -15,9 +15,50 @@ impl ListNode {
 pub struct Solution;
 
 impl Solution {
+    pub fn has_k_nodes(node: &ListNode, k: i32) -> bool {
+        let mut current = &node.next;
+        for _ in 0..k {
+            match current {
+                Some(n) => current = &n.next,
+                None => return false,
+            }
+        }
+        true
+    }
+
     pub fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
         // TODO: implement
-        head
+        let mut dummy = Box::new(ListNode { val: 0, next: head });
+        let mut prev = &mut dummy;
+
+        // while prev.next.is_some() && Self::has_k_nodes(prev, k) {
+        while Self::has_k_nodes(prev, k) {
+
+            let mut k_head = prev.next.take().unwrap();
+            for _ in 0..k-1 {
+                let mut k_next = k_head.next.take().unwrap();
+                k_head.next = k_next.next.take();
+                k_next.next = prev.next.take();
+                prev.next = Some(k_next);
+                println!("a {}", prev.val);
+            }
+
+            // Need to connect end of k-1 -> k_head
+            let mut k_end = prev.next.as_mut().unwrap();
+            for _ in 0..k-2 {
+                k_end = k_end.next.as_mut().unwrap();
+            }
+            k_end.next = Some(k_head);
+
+            // prev goes to next k node
+            for _ in 0..k {
+                prev = prev.next.as_mut().unwrap(); // move prev to k
+                println!("b {}", prev.val);
+            }
+
+        }
+
+        dummy.next
     }
 }
 
