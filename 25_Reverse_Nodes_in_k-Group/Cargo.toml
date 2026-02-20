@@ -1,0 +1,11 @@
+[package]
+name = "reverse_nodes_in_k_group"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "reverse_nodes_in_k_group"
+path = "src/main.rs"
