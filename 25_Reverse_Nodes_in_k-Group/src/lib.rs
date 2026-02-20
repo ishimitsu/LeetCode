@@ -28,6 +28,8 @@ impl Solution {
 
     pub fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
         // TODO: implement
+        if k <=1 { return head; }
+
         let mut dummy = Box::new(ListNode { val: 0, next: head });
         let mut prev = &mut dummy;
 
@@ -43,15 +45,11 @@ impl Solution {
             }
 
             // prev of k_head is none, so need to connect end of k and k_head
-            if k > 1 {
-                let mut k_end = prev.next.as_mut().unwrap();
-                for _ in 0..k-2 {
-                    k_end = k_end.next.as_mut().unwrap();
-                }
-                k_end.next = Some(k_head);
-            } else {
-                prev.next = Some(k_head);
+            let mut k_end = prev.next.as_mut().unwrap();
+            for _ in 0..k-2 {
+                k_end = k_end.next.as_mut().unwrap();
             }
+            k_end.next = Some(k_head);
 
             // prev goes to next k node
             for _ in 0..k {
