@@ -4,13 +4,14 @@ use std::i32;
 pub struct Solution;
 
 impl Solution {
-    pub fn get_max_sub_array (nums: &Vec<i32>, left: usize, right: usize) -> i32 {
+    // divide and conquer approach
+    pub fn get_max_sub_array_div_conq (nums: &Vec<i32>, left: usize, right: usize) -> i32 {
         if left == right { return nums[left]; }
 
         let mid = (left + right) / 2;
         //println!("left:{}, right:{}, mid:{}", left, right, mid);
-        let left_max = Self::get_max_sub_array(&nums, left, mid);
-        let right_max = Self::get_max_sub_array(&nums, mid+1, right);
+        let left_max = Self::get_max_sub_array_div_conq(&nums, left, mid);
+        let right_max = Self::get_max_sub_array_div_conq(&nums, mid+1, right);
 
         let mut cross_max_left = i32::MIN;
         let mut cross_max_right = i32::MIN;
@@ -35,11 +36,30 @@ impl Solution {
         max_sum
     }
 
+    // Kadane's algorithm
+    pub fn get_max_sub_array (nums: &Vec<i32>) -> i32 {
+        let mut maxEnding = 0;
+        let mut res = i32::MIN;
+
+        for i in 0..nums.len() {
+            maxEnding += nums[i];
+            if maxEnding > res { res = maxEnding; }
+
+            if maxEnding < 0 {
+                // start new subarray
+                maxEnding = 0;
+            }
+        }
+
+        res
+    }
+
     pub fn max_sub_array(nums: Vec<i32>) -> i32 {
         // TODO: implement
         if nums.is_empty() { return 0;}
         else if nums.len() == 1 { return nums[0]; }
-        Self::get_max_sub_array(&nums, 0, nums.len()-1)
+        Self::get_max_sub_array(&nums)
+        // Self::get_max_sub_array_div_conq(&nums, 0, nums.len()-1)
     }
 }
 
