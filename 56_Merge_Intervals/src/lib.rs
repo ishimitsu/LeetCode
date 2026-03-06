@@ -1,16 +1,29 @@
+use std::vec;
+
 pub struct Solution;
 
 impl Solution {
     pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
         // TODO: implement
-        let mut result = intervals;
-        if result.len() == 0 { return result; }
+        let mut sorted = intervals;
+        if sorted.len() == 0 { return sorted; }
+        sorted.sort_by_key(|interval| interval[0]);
 
-        println!("{:?}", result);
+        let mut result: Vec<Vec<i32>> = vec![];
 
-        result.sort_by_key(|interval| interval[0]);
+        for interval in sorted {
 
-        println!("{:?}", result);
+            if result.is_empty() || interval[0] > result.last().unwrap()[1] {
+                // not duplicate, and interval is bigger than result
+                result.push(interval);
+            } else if interval[1] > result.last().unwrap()[1] {
+                // After sorted, if duplicated interval[1] is smaller than result[1],
+                // it is always covered by result
+                // so only check interval[1] bigger case, and update result[1]
+
+                result.last_mut().unwrap()[1] = interval[1];
+            }
+        }
 
         result
     }
