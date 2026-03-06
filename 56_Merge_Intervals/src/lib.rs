@@ -1,12 +1,8 @@
-use std::vec;
-
 pub struct Solution;
 
 impl Solution {
     pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-        // TODO: implement
         let mut sorted = intervals;
-        if sorted.len() == 0 { return sorted; }
         sorted.sort_by_key(|interval| interval[0]);
 
         let mut result: Vec<Vec<i32>> = vec![];
