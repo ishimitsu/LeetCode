@@ -3,7 +3,14 @@ pub struct Solution;
 impl Solution {
     pub fn can_jump(nums: Vec<i32>) -> bool {
         // TODO: implement
-        false
+        let mut cur_idx = 0;
+        let last_idx = nums.len().try_into().unwrap();
+        for jmp_num in nums {
+            if jmp_num <= 0 { return false }
+            cur_idx = cur_idx + jmp_num;
+        }
+
+        cur_idx >= last_idx
     }
 }
 
