@@ -15,11 +15,12 @@ impl Solution {
 
             let jmp_idx: usize = idx + nums[idx] as usize;  //nums are always >=0, so convert i32 => usize
             if jmp_idx > next_jmp_reach_max {
-                // if reach_max is updated, you can jump all 0..reach_max
-                // so you only need to check reach_max
+                // update reach_max of next-jmp
                 next_jmp_reach_max = jmp_idx;
             }
+
             if idx == cur_jmp_reach_max {
+                // if idx is max of current-jmp, go next idx with new-jmp.
                 jmp_times = jmp_times + 1;
                 cur_jmp_reach_max = next_jmp_reach_max;
             }
