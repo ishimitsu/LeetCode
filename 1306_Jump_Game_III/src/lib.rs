@@ -8,28 +8,32 @@ impl Solution {
         }
 
         let mut cur_idx = start as usize;
+        if arr[cur_idx] == 0 { return true }
+
+        let arr_len = arr.len();
         let mut visited_idx = vec![false; arr.len()];
         let mut queue = vec![];
-        queue.push(arr[cur_idx]);
+        queue.push(cur_idx);
         visited_idx[cur_idx] = true;
 
         // BFS algorithm
         while !queue.is_empty() {
             cur_idx = queue.pop().unwrap() as usize;
+            let arr_val = arr[cur_idx] as usize;
 
-            let forward_idx = cur_idx + arr[cur_idx] as usize;
-            if forward_idx < arr.len() && visited_idx[forward_idx] == false {
+            let forward_idx = cur_idx + arr_val;
+            if forward_idx < arr_len && visited_idx[forward_idx] == false {
                 if arr[forward_idx] == 0 { return true }
                 visited_idx[forward_idx] = true;
-                queue.push(arr[forward_idx]);
+                queue.push(forward_idx);
             }
 
-            if cur_idx >= arr[cur_idx] as usize {
-                let back_idx = cur_idx - arr[cur_idx] as usize;
+            if cur_idx >= arr_val {
+                let back_idx: usize = cur_idx - arr_val;
                 if visited_idx[back_idx] == false {
                     if arr[back_idx] == 0 { return true }
                     visited_idx[back_idx] = true;
-                    queue.push(arr[back_idx]);
+                    queue.push(back_idx);
                 }
             }
         }
@@ -62,4 +66,15 @@ mod tests {
         // Output: false
         assert_eq!(Solution::can_reach(vec![3, 0, 2, 1, 2], 2), false);
     }
+
+    #[test]
+    fn example4() {
+        assert_eq!(Solution::can_reach(vec![0,3,0,6,3,3,4], 6), true);
+    }
+
+    #[test]
+    fn example5() {
+        assert_eq!(Solution::can_reach(vec![1,1,1,1,1,1,1,1,0], 3), true);
+    }
+
 }
