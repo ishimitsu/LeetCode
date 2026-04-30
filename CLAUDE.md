@@ -48,3 +48,25 @@ gh pr create --title "Feature/{問題番号} {問題名(小文字)}" --body "htt
 例:
 - タイトル: `Feature/15 3sum`, `Feature/14 longest common prefix`
 - URL: `https://leetcode.com/problems/3sum`, `https://leetcode.com/problems/longest-common-prefix`
+
+## ローカルブランチのクリーンアップ
+
+PRがマージされリモートブランチが削除された後、対応するローカルブランチを削除する。
+
+```bash
+git fetch --prune && \
+git branch -vv | grep ': gone]' | awk '{print $1}' | while read branch; do
+  state=$(gh pr list --head "$branch" --state merged --json number --jq 'length')
+  if [ "$state" -gt 0 ]; then
+    git branch -D "$branch"
+    echo "Deleted (merged PR): $branch"
+  else
+    echo "Skipped (not merged?): $branch"
+  fi
+done
+```
+
+- `git fetch --prune`: リモートで削除されたブランチのトラッキング情報を更新
+- `gone` と表示されるブランチ（リモート削除済み）を対象に、PRのマージ状態を `gh` で確認
+- マージ済みであれば強制削除（`-D`）、未マージは保留してスキップ
+- squash merge / rebase merge もPR状態で正しく判定できる
