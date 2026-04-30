@@ -3,6 +3,37 @@ pub struct Solution;
 impl Solution {
     pub fn can_reach(arr: Vec<i32>, start: i32) -> bool {
         // TODO: implement
+        if arr.len() == 1 {
+            if arr[0] == 0 { return true } else { return false }
+        }
+
+        let mut cur_idx = start as usize;
+        let mut visited_idx = vec![false; arr.len()];
+        let mut queue = vec![];
+        queue.push(arr[cur_idx]);
+        visited_idx[cur_idx] = true;
+
+        // BFS algorithm
+        while !queue.is_empty() {
+            cur_idx = queue.pop().unwrap() as usize;
+
+            let forward_idx = cur_idx + arr[cur_idx] as usize;
+            if forward_idx < arr.len() && visited_idx[forward_idx] == false {
+                if arr[forward_idx] == 0 { return true }
+                visited_idx[forward_idx] = true;
+                queue.push(arr[forward_idx]);
+            }
+
+            if cur_idx >= arr[cur_idx] as usize {
+                let back_idx = cur_idx - arr[cur_idx] as usize;
+                if visited_idx[back_idx] == false {
+                    if arr[back_idx] == 0 { return true }
+                    visited_idx[back_idx] = true;
+                    queue.push(arr[back_idx]);
+                }
+            }
+        }
+
         false
     }
 }
