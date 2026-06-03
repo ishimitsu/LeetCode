@@ -1,17 +1,19 @@
+use std::collections::VecDeque;
+
 fn try_visit(
     next_idx: usize,
     mov_cnt: i32,
     arr_len: usize,
     visited_idx: &mut Vec<bool>,
-    queue: &mut Vec<(usize, i32)>,
+    queue: &mut VecDeque<(usize, i32)>,
     min_mov_cnt: &mut i32,
 ) {
-    if !visited_idx[next_idx] {
-        visited_idx[next_idx] = true;
-        queue.push((next_idx, mov_cnt));
-        if next_idx == arr_len - 1 && *min_mov_cnt > mov_cnt {
-            *min_mov_cnt = mov_cnt;
-        }
+    if visited_idx[next_idx] == true { return };
+
+    visited_idx[next_idx] = true;
+    queue.push_back((next_idx, mov_cnt));
+    if next_idx == arr_len - 1 && *min_mov_cnt > mov_cnt {
+        *min_mov_cnt = mov_cnt;
     }
 }
 
@@ -26,13 +28,13 @@ impl Solution {
         let mut cur_idx = 0;
         let mut min_mov_cnt = arr_len as i32;
         let mut visited_idx = vec![false; arr.len()];
-        let mut queue = vec![];
-        queue.push((cur_idx, mov_cnt));
+        let mut queue = VecDeque::new();
+        queue.push_back((cur_idx, mov_cnt));
         visited_idx[cur_idx] = true;
 
         // BFS algorithm
         while !queue.is_empty() {
-            (cur_idx, mov_cnt) = queue.pop().unwrap();
+            (cur_idx, mov_cnt) = queue.pop_front().unwrap();
             mov_cnt = mov_cnt + 1;
 
             if cur_idx + 1 < arr_len {
