@@ -1,20 +1,15 @@
 use std::collections::VecDeque;
 
-fn try_visit(
+fn push_next_idx(
     next_idx: usize,
     mov_cnt: i32,
-    arr_len: usize,
     visited_idx: &mut Vec<bool>,
     queue: &mut VecDeque<(usize, i32)>,
-    min_mov_cnt: &mut i32,
 ) {
     if visited_idx[next_idx] == true { return };
 
     visited_idx[next_idx] = true;
     queue.push_back((next_idx, mov_cnt));
-    if next_idx == arr_len - 1 && *min_mov_cnt > mov_cnt {
-        *min_mov_cnt = mov_cnt;
-    }
 }
 
 pub struct Solution;
@@ -35,21 +30,27 @@ impl Solution {
         // BFS algorithm
         while !queue.is_empty() {
             (cur_idx, mov_cnt) = queue.pop_front().unwrap();
-            mov_cnt = mov_cnt + 1;
 
-            if cur_idx + 1 < arr_len {
-                try_visit(cur_idx + 1, mov_cnt, arr_len, &mut visited_idx, &mut queue, &mut min_mov_cnt);
-            }
+            if cur_idx == arr_len - 1 && min_mov_cnt > mov_cnt {
+                min_mov_cnt = mov_cnt;
+            } else {
+                mov_cnt = mov_cnt + 1;
 
-            if cur_idx >= 1 {
-                try_visit(cur_idx - 1, mov_cnt, arr_len, &mut visited_idx, &mut queue, &mut min_mov_cnt);
-            }
+                if cur_idx + 1 < arr_len {
+                    push_next_idx(cur_idx + 1, mov_cnt, &mut visited_idx, &mut queue);
+                }
 
-            for same_val_idx in 0..arr_len {
-                if same_val_idx != cur_idx && arr[same_val_idx] == arr[cur_idx] {
-                    try_visit(same_val_idx, mov_cnt, arr_len, &mut visited_idx, &mut queue, &mut min_mov_cnt);
+                if cur_idx >= 1 {
+                    push_next_idx(cur_idx - 1, mov_cnt, &mut visited_idx, &mut queue);
+                }
+
+                for same_val_idx in 0..arr_len {
+                    if same_val_idx != cur_idx && arr[same_val_idx] == arr[cur_idx] {
+                        push_next_idx(same_val_idx, mov_cnt, &mut visited_idx, &mut queue);
+                    }
                 }
             }
+
         }
 
         min_mov_cnt
