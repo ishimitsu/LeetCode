@@ -1,4 +1,5 @@
 use std::collections::VecDeque;
+use std::collections::HashSet;
 
 fn push_next_idx(
     next_idx: usize,
@@ -23,6 +24,7 @@ impl Solution {
         let mut cur_idx = 0;
         let mut min_mov_cnt = arr_len as i32;
         let mut visited_idx = vec![false; arr.len()];
+        let mut checked_val = HashSet::new();
         let mut queue = VecDeque::new();
         queue.push_back((cur_idx, mov_cnt));
         visited_idx[cur_idx] = true;
@@ -44,9 +46,14 @@ impl Solution {
                     push_next_idx(cur_idx - 1, mov_cnt, &mut visited_idx, &mut queue);
                 }
 
-                for same_val_idx in 0..arr_len {
-                    if same_val_idx != cur_idx && arr[same_val_idx] == arr[cur_idx] {
-                        push_next_idx(same_val_idx, mov_cnt, &mut visited_idx, &mut queue);
+                let cur_val = arr[cur_idx];
+                if checked_val.contains(&cur_val) == false {
+                    checked_val.insert(cur_val);
+
+                    for same_val_idx in 0..arr_len {
+                        if same_val_idx != cur_idx && arr[same_val_idx] == cur_val {
+                            push_next_idx(same_val_idx, mov_cnt, &mut visited_idx, &mut queue);
+                        }
                     }
                 }
             }
